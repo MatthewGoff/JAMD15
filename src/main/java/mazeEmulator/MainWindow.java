@@ -13,11 +13,8 @@ public class MainWindow extends JFrame implements ActionListener
 {
 
 	private JButton debugViewButton;
-	private JButton button2;
-	private JButton button3;
-	private JButton button4;
-	private JButton button5;
-	private JButton button6;
+	private JButton generateMazeButton;
+	private JButton correctMazeButton;
 
 	private MazePanel myPanel;
 
@@ -37,22 +34,37 @@ public class MainWindow extends JFrame implements ActionListener
 		debugViewButton.setBounds(10,10,100,30);
 		debugViewButton.addActionListener(this);
 
+		generateMazeButton = new JButton("Generate maze");
+		this.getContentPane().add(generateMazeButton);
+		generateMazeButton.setBounds(120,10,150,30);
+		generateMazeButton.addActionListener(this);
+
+		correctMazeButton = new JButton("Correct maze");
+		this.getContentPane().add(correctMazeButton);
+		correctMazeButton.setBounds(280,10,150,30);
+		correctMazeButton.addActionListener(this);
+
 
 		myPanel = new MazePanel(simulatorParam, robotParam, mazeParam);
 		this.getContentPane().add(myPanel);
 		myPanel.setBounds(10,40,myPanel.getWidth(),myPanel.getHeight());
 
-
-
-
-
 		this.setVisible(true);
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource()==debugViewButton){
+		if (e.getSource()==debugViewButton)
+		{
 			theSimulator.switchDebugView();
-		}		
+		}
+		else if (e.getSource()==generateMazeButton)
+		{
+			theSimulator.generateMaze();
+		}
+		else if (e.getSource()==correctMazeButton)
+		{
+			theSimulator.correctMaze();
+		}
 	}
 	
 	protected void updateGUI()

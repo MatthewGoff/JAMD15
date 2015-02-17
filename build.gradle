@@ -18,3 +18,7 @@ if (hasProperty("unchecked")) {
    	options.compilerArgs << "-Xlint:unchecked"		 
    }
 }
+
+task createJavadocs(type: Javadoc) {
+  source = sourceSets.main.allJava
+}
