@@ -1,4 +1,5 @@
-
 *~
 **/*~ #autosave files
+.gradle/
+bin/
 build/ #do not store build
