@@ -274,6 +274,8 @@ public class Maze
 		}
 		currentCell = unvisited.pop();
 		this.randomDepthFirst(currentCell, unvisited, randomizer);
+		this.clearCenter();
+		this.correct();
 	}
 	
 	private boolean randomDepthFirst(Cell currentCell, Stack<Cell> unvisited, Random randomizer)
@@ -295,6 +297,18 @@ public class Maze
 			neighbors.retainAll(unvisited);
 		}
 		return false;
+		
+	}
+	
+	/*
+	 * Clears a 2x2 center square in the maze
+	 */
+	public void clearCenter()
+	{
+		cells[7][7].removeWall(Direction.NORTH, true);
+		cells[7][7].removeWall(Direction.EAST, true);
+		cells[8][8].removeWall(Direction.SOUTH, true);
+		cells[8][8].removeWall(Direction.WEST, true);
 	}
 
 	/**
