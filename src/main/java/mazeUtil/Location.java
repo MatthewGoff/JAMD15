@@ -41,6 +41,9 @@ public class Location
 		return row;
 	}
 
+	/**
+	* NOT NECESSARY FOR FINAL IMPLEMENTATION
+	*/
 	public String toString()
 	{
 		return "("+column+","+row+")";

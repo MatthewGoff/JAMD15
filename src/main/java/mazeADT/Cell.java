@@ -1,6 +1,5 @@
 package mazeADT;
 
-import mazeEmulator.Simulator;
 import mazeUtil.Location;
 import mazeUtil.Direction;
 import mazeUtil.LocationList;
@@ -92,39 +91,42 @@ public class Cell
 		}
 	}
 
+	/**
+	* Note: Check if used.
+	*/
 	public Location getLocation()
 	{
 		return myLocation;
 	}
+
 
 	public LocationList getAdjacent()
 	{
 		LocationList adjacent= new LocationList();
 		if (!this.hasWall(Direction.NORTH))
 		{
-			//System.out.println("We're adding the north cell to adjacent. North Cell at "+northCell.getLocation());
 			adjacent.addToStart(northCell.getLocation());
 		}
 		if (!this.hasWall(Direction.EAST))
 		{
-			//System.out.println("We're adding the east cell to adjacent. East Cell at "+eastCell.getLocation());
 			adjacent.addToStart(eastCell.getLocation());
 		}
 		if (!this.hasWall(Direction.SOUTH))
 		{
-			//System.out.println("We're adding the south cell to adjacent. South Cell at "+southCell.getLocation());
 			adjacent.addToStart(southCell.getLocation());
 		}
 		if (!this.hasWall(Direction.WEST))
 		{
-			//System.out.println("We're adding the west cell to adjacent. West Cell at "+westCell.getLocation());
 			adjacent.addToStart(westCell.getLocation());
 		}
-
-		//System.out.println("We're inside cell right now. And adjacent = "+ adjacent);
 		return adjacent;
 	}
 
+	/**
+	* Removes all the walls from around this cell which are not edge walls
+	*
+	* NOT NECCESARY FOR FINAL IMPLEMENTATION.
+	*/
 	public void clearWalls()
 	{
 		this.removeWall(Direction.NORTH,true);
@@ -133,6 +135,12 @@ public class Cell
 		this.removeWall(Direction.WEST,true);
 	}
 
+	/**
+	* Removes the wall in a given direction only if it is
+	* not an edge wall. Used when creating a new maze
+	*
+	* NOT NECCESARY FOR FINAL IMPLEMENTATION.
+	*/
 	public void removeWall(Direction direction, boolean reciprocate)
 	{
 		if (direction.equals(Direction.NORTH) && northCell!=null)

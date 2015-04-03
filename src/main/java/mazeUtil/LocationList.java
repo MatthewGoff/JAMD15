@@ -89,14 +89,14 @@ public class LocationList
 
 	public Location getCurrent()
 	{
-		/*if (current == null)
-		{
-			current = root;
-		}*/
-
 		return current.myLocation;
 	}
 
+	/**
+	*
+	*
+	* NOT NECCESARY FOR FINAL IMPLEMENTATION.
+	*/
 	public String toString()
 	{
 		String returnString = "";

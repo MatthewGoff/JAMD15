@@ -1,5 +1,9 @@
 package mazeUtil;
 
+/**
+* This class is an enumerator based on characters.
+* It could be based on bytes if space was an issue.
+*/
 public class Direction
 {
     public static final Direction NORTH = new Direction('n');
@@ -43,11 +47,18 @@ public class Direction
         }
     }
 
+    /**
+    * Could be removed for processing time
+    */
     private char getDirection()
     {
     	return myDirection;
     }
 
+    /**
+    *
+    * NOT NECESSARY FOR FINAL IMPLEMENTATION
+    */
     public String toString()
     {
         switch (myDirection) {
@@ -59,6 +70,11 @@ public class Direction
         }
     }
 
+    /**
+    * Used for creating random mazes
+    *
+    * NOT NECESSARY FOR FINAL IMPLEMENTATION
+    */
     public static Direction getRandomDirection()
     {
         int decision = (int)(4*Math.random());
@@ -86,7 +102,7 @@ public class Direction
     }
 
     /**
-    * Get the direction counter clockwise to this one
+    * Get the direction clockwise to this one
     *
     *@return Direction the direction counter clockwise to this one
     */
@@ -96,6 +112,24 @@ public class Direction
         else if (this.equals(EAST)){return SOUTH;}
         else if (this.equals(SOUTH)){return WEST;}
         else if (this.equals(WEST)){return NORTH;}
+        else
+        {
+            System.out.println("Error, Invalid direction.");
+            return null;
+        }
+    }
+
+    /**
+    * Get the direction counter clockwise to this one
+    *
+    *@return Direction the direction counter clockwise to this one
+    */
+    public Direction getCounterClockwise()
+    {
+        if (this.equals(NORTH)){return WEST;}
+        else if (this.equals(EAST)){return NORTH;}
+        else if (this.equals(SOUTH)){return EAST;}
+        else if (this.equals(WEST)){return SOUTH;}
         else
         {
             System.out.println("Error, Invalid direction.");

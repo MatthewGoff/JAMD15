@@ -1,6 +1,5 @@
 package mazeADT;
 
-import mazeEmulator.Simulator;
 import mazeUtil.Location;
 import mazeUtil.Direction;
 import mazeUtil.LocationMap;
@@ -19,7 +18,7 @@ public class Maze
 	private Cell[][] cells;
 
 	/**
-	* Creates an empty maze with walls of argument height and width.
+	* Creates an empty maze with cells of argument height and width.
 	* Has walls along the edges and to the east of the startinc cell.
 	*
 	*@param heightParam the height of this maze
@@ -92,7 +91,7 @@ public class Maze
 	/**
 	* Gets the height of this maze
 	*
-	* NOT NECCESARY FOR FINAL IMPLEMENTATION
+	* NOT NECESSARY FOR FINAL IMPLEMENTATION
 	*
 	*@return int the height of this maze
 	*/
@@ -104,7 +103,7 @@ public class Maze
 	/**
 	* Gets the width of this maze
 	*
-	* NOT NECCESARY FOR FINAL IMPLEMENTATION
+	* NOT NECESSARY FOR FINAL IMPLEMENTATION
 	*
 	*@return int the width of this maze
 	*/
@@ -168,7 +167,8 @@ public class Maze
 	/**
 	* returns whether there is a wall in the argument direction at the argument location
 	*
-	* NOT NECCESARY FOR FINAL IMPLEMENTATION
+	* NOT NECESSARY FOR FINAL IMPLEMENTATION
+	* Note: Check if used.
 	*
 	*@param column the column of the cell you are curious about
 	*@param row the row of the cell you are curious about
@@ -188,6 +188,7 @@ public class Maze
 
 	/**
 	* Returns the cell in this maze at the argument location
+	* Note: Used in getPath
 	*
 	*@param cellLocation the locatio of the cell you want
 	*@param Cell the cell at the argument location
@@ -202,7 +203,7 @@ public class Maze
 	* randomly repopulates with new walls with the density of the argument.
 	* This method does not gaurenty anything about the solvability of the maze
 	*
-	* NOT NECCESARY FOR FINAL IMPLEMENTATION
+	* NOT NECESSARY FOR FINAL IMPLEMENTATION
 	*
 	*@param wallDensity the density of walls to randomize this maze with. Must be between 0 and 1.
 	*/
@@ -243,7 +244,7 @@ public class Maze
 	* Ensures that there is a path from every cell in this maze to every other cell.
 	* If this is not the case, it will strategically remove walls untill the condition is met
 	*
-	* NOT NECCESARY FOR FINAL IMPLEMENTATION
+	* NOT NECESSARY FOR FINAL IMPLEMENTATION
 	*/
 	public void correct()
 	{
@@ -266,7 +267,7 @@ public class Maze
 	* Ensures that there is a path between the argument cell and the cell next to it in the argument direction.
 	* Randomly removes walls from the neighboring cell untill this is true.
 	*
-	* NOT NECCESARY FOR FINAL IMPLEMENTATION
+	* NOT NECESSARY FOR FINAL IMPLEMENTATION
 	*
 	*@param origin a cell in the maze
 	*@param direction the direction of an adjacent cell
