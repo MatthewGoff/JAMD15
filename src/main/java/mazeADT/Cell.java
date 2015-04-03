@@ -1,5 +1,6 @@
 package mazeADT;
 
+import java.util.*;
 import mazeEmulator.Simulator;
 import mazeUtil.Location;
 import mazeUtil.Direction;
@@ -96,6 +97,41 @@ public class Cell
 	{
 		return myLocation;
 	}
+	
+	public List<Cell> getNeighbors()
+	{
+		List<Cell> neighbors = new LinkedList<Cell>();
+		if (northCell!=null) {neighbors.add(northCell);}
+		if (westCell!=null) {neighbors.add(westCell);}
+		if (southCell!=null) {neighbors.add(southCell);}
+		if (eastCell!=null) {neighbors.add(eastCell);}
+		return neighbors;
+	}
+	
+	public Direction getConnection(Cell neighbor)
+	{
+		if (this.northCell==neighbor) 
+		{
+			return Direction.NORTH;
+		} 
+		else if (this.eastCell==neighbor) 
+		{
+			return Direction.EAST;
+		} 
+		else if (this.southCell==neighbor)
+		{
+			return Direction.SOUTH;
+		}
+		else if (this.northCell==neighbor)
+		{
+			return Direction.WEST;
+		}
+		else
+		{
+			//System.out.println("You done fucked up!");
+			return Direction.getRandomDirection();
+		}
+	}
 
 	public LocationList getAdjacent()
 	{
@@ -131,6 +167,15 @@ public class Cell
 		this.removeWall(Direction.EAST,true);
 		this.removeWall(Direction.SOUTH,true);
 		this.removeWall(Direction.WEST,true);
+	}
+	
+	public void addWalls()
+	{
+		this.clearWalls();
+		this.addWall(Direction.NORTH,true);
+		this.addWall(Direction.EAST,true);
+		this.addWall(Direction.SOUTH,true);
+		this.addWall(Direction.WEST,true);
 	}
 
 	public void removeWall(Direction direction, boolean reciprocate)

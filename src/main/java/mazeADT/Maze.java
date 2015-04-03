@@ -1,5 +1,9 @@
 package mazeADT;
 
+import java.util.List;
+import java.util.Random;
+import java.util.Stack;
+
 import mazeEmulator.Simulator;
 import mazeUtil.Location;
 import mazeUtil.Direction;
@@ -7,8 +11,8 @@ import mazeUtil.LocationMap;
 import mazeUtil.LocationList;
 
 /**
-* An ADT which holds a two dimentional array of cells with walls inbetween them.
-* Is can generate random maze arrangments and can find a path between any two cells.
+* An ADT which holds a two dimensional array of cells with walls in between them.
+* Is can generate random maze arrangements and can find a path between any two cells.
 *
 */
 public class Maze
@@ -20,7 +24,7 @@ public class Maze
 
 	/**
 	* Creates an empty maze with walls of argument height and width.
-	* Has walls along the edges and to the east of the startinc cell.
+	* Has walls along the edges and to the east of the starting cell.
 	*
 	*@param heightParam the height of this maze
 	*@param widthParam the width of this maze
@@ -200,7 +204,7 @@ public class Maze
 	/**
 	* Clears all of the internal walls in this maze and 
 	* randomly repopulates with new walls with the density of the argument.
-	* This method does not gaurenty anything about the solvability of the maze
+	* This method does not guarantee anything about the solvability of the maze
 	*
 	* NOT NECCESARY FOR FINAL IMPLEMENTATION
 	*
@@ -238,10 +242,64 @@ public class Maze
 
 		cells[0][0].addWall(Direction.EAST,true);
 	}
+	
+	/**
+	 * Generates a depth-first style maze by initializing a maze fully walled, then uses a
+	 * randomized depth first search to eliminate walls between cells. Honestly for this part
+	 * I just looked up maze generation on Google and found: 
+	 * 			http://en.wikipedia.org/wiki/Maze_generation_algorithm#Depth-first_search
+	 * I modified this basic algorithm to ensure there were multiple solutions to the maze,
+	 * to put a 2x2 "end zone" in the center of the maze, and to ensure wall-following alone
+	 * isn't enough to solve the maze. 
+	 * 
+	 * This method is more robust than the random method, as it ensures the maze is solvable
+	 * and complex. 
+	 * 
+	 * NOT NECCESARY FOR FINAL IMPLEMENTATION
+	 */
+	public void generateDepthFirst()
+	{
+		int counter = 0;
+		Stack<Cell> unvisited = new Stack<Cell>();
+		Cell currentCell;
+		Random randomizer = new Random();
+		
+		for (int column=0;column<width;column++)
+		{
+			for (int row=0;row<height;row++)
+			{
+				cells[column][row].addWalls();
+				unvisited.add(cells[column][row]);
+			}
+		}
+		currentCell = unvisited.pop();
+		this.randomDepthFirst(currentCell, unvisited, randomizer);
+	}
+	
+	private boolean randomDepthFirst(Cell currentCell, Stack<Cell> unvisited, Random randomizer)
+	{
+		List<Cell> neighbors = currentCell.getNeighbors();
+		neighbors.retainAll(unvisited);
+		while (!neighbors.isEmpty())
+		{
+			Cell newCell = neighbors.get(randomizer.nextInt(neighbors.size()));
+			Direction neighborDirection = newCell.getConnection(currentCell);
+			if (neighborDirection!=null)
+			{
+				newCell.removeWall(neighborDirection, true);
+			}
+			unvisited.remove(newCell);
+			System.out.println("Removed " + neighborDirection + " wall at " + currentCell.getLocation());
+			//System.out.println("Current Cell: " + currentCell);
+			this.randomDepthFirst(newCell,unvisited,randomizer);
+			neighbors.retainAll(unvisited);
+		}
+		return false;
+	}
 
 	/**
 	* Ensures that there is a path from every cell in this maze to every other cell.
-	* If this is not the case, it will strategically remove walls untill the condition is met
+	* If this is not the case, it will strategically remove walls until the condition is met
 	*
 	* NOT NECCESARY FOR FINAL IMPLEMENTATION
 	*/
@@ -264,13 +322,15 @@ public class Maze
 
 	/**
 	* Ensures that there is a path between the argument cell and the cell next to it in the argument direction.
-	* Randomly removes walls from the neighboring cell untill this is true.
+	* Randomly removes walls from the neighboring cell until this is true.
 	*
 	* NOT NECCESARY FOR FINAL IMPLEMENTATION
 	*
 	*@param origin a cell in the maze
 	*@param direction the direction of an adjacent cell
 	*/
+	
+	
 	private void ensurePath(Location origin, Direction direction)
 	{
 		Direction randomDirection = Direction.getRandomDirection();

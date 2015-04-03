@@ -4,11 +4,13 @@ public class LocationList
 {
 	private LocationListNode root;
 	private LocationListNode current;
+	public int length;
 
 	public LocationList()
 	{
 		root = null;
 		current = null;
+		length = 0;
 	}
 
 	public void addToStart(Location newLocation)
@@ -16,6 +18,7 @@ public class LocationList
 		LocationListNode newRoot = new LocationListNode(newLocation);
 		newRoot.next = this.root;
 		this.root = newRoot;
+		this.length++;
 	}
 
 	public void addToEnd(Location newLocation)
@@ -23,6 +26,7 @@ public class LocationList
 		if (root==null)
 		{
 			root = new LocationListNode(newLocation);
+			this.length++;
 		}
 		else
 		{
@@ -33,9 +37,10 @@ public class LocationList
 			}
 
 			currentNode.next = new LocationListNode(newLocation);
+			this.length++;
 		}
 	}
-
+	
 	public Location getRoot()
 	{
 		return root.myLocation;
@@ -46,6 +51,7 @@ public class LocationList
 		if (root!=null)
 		{
 			root = root.next;
+			this.length--;
 		}
 	}
 

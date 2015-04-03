@@ -70,5 +70,17 @@ public class Location
 			return null;
 		}
 	}
+	
+	public boolean isValid()
+	{
+		if ((this.column<0||this.column>15)||(this.row<0||this.row>15))
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
 
 }

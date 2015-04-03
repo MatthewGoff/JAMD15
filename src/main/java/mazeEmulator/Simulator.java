@@ -41,7 +41,7 @@ public class Simulator
 
 	protected void generateMaze()
 	{
-		myMaze.generateRandom(0.7);
+		myMaze.generateDepthFirst();
 		myRobot.giveMaze(myMaze);
 		mainWindow.updateGUI();
 	}
