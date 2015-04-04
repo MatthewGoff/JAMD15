@@ -27,7 +27,7 @@ public class Environment
 	{
 		myRobot = new JAMDRobot(new Location(7,7), this);
 		simulatedMaze = new Maze(16,16);
-		mainWindow = new MainWindow(800,800,this,myRobot,simulatedMaze);
+		mainWindow = new MainWindow(800,800,this,simulatedMaze);
 	}
 
 	public void switchDebugView()
@@ -39,14 +39,12 @@ public class Environment
 	public void generateMaze()
 	{
 		simulatedMaze.generateRandom(0.7);
-		myRobot.giveMaze(simulatedMaze);
 		reset();
 	}
 
 	public void correctMaze()
 	{
 		simulatedMaze.correct();
-		myRobot.giveMaze(simulatedMaze);
 		reset();
 	}
 
