@@ -29,6 +29,20 @@ public class JAMDRobot implements Robot
 		running = false;
 	}
 
+	public void init()
+	{
+		while(true)
+		{
+			this.run();
+			
+		}
+	}
+
+	public void run()
+	{
+
+	}
+
 	private void move(Direction direction)
 	{
 		// ...
