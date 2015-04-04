@@ -74,6 +74,7 @@ public class JAMDRobot implements Robot
 		// Needs implementation in Arduino
 
 		myDirection = myDirection.getCounterClockwise();
+		myEnvironment.hasMovedCounterClockwise();
 	}
 
 	private void moveForward()
