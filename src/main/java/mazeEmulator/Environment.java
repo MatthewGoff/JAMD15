@@ -20,7 +20,7 @@ public class Environment
 
 	public static void main(String[] args)
 	{
-		Envioronment myEnvironment = new Environment();
+		Environment myEnvironment = new Environment();
 	}
 
 	private Environment()
