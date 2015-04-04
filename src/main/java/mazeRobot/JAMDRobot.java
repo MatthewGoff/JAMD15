@@ -34,7 +34,7 @@ public class JAMDRobot implements Robot
 		while(true)
 		{
 			this.run();
-			
+
 		}
 	}
 
@@ -60,12 +60,42 @@ public class JAMDRobot implements Robot
 
 	}
 
+
+
+	private void turnClockwise()
+	{
+		// Needs implementation in Arduino
+
+		myDirection = myDirection.getClockWise();
+	}
+
+	private void turnCounterClockwise()
+	{
+		// Needs implementation in Arduino
+
+		myDirection = myDirection.getCounterClockwise();
+		myEnvironment.hasMovedCounterClockwise();
+	}
+
+	private void moveForward()
+	{
+		// Needs implementation in Arduino
+
+		myLocation = myLocation.getAdjacent(myDirection);
+	}
+
+	private boolean hasWall(Direction direction)
+	{
+		// Needs implementation in Arduino
+
+		return myEnvironment.hasWall(direction);
+	}
+
 	public void reset()
 	{
 		myLocation = new Location(0,0);
 		myDirection = Direction.NORTH;
 	}
-
 	/**
 	* NOT NECESSARY FOR FINAL IMPLEMENTATION
 	*@return The maze that this robot has so far constructed
@@ -87,6 +117,7 @@ public class JAMDRobot implements Robot
 
 	/**
 	* NOT NECESSARY FOR FINAL IMPLEMENTATION
+	* Note: Check if called
 	*/
 	public Location getLocation()
 	{
@@ -95,6 +126,7 @@ public class JAMDRobot implements Robot
 
 	/**
 	* NOT NECESSARY FOR FINAL IMPLEMENTATION
+	* Note: Check if called
 	*/
 	public Direction getDirection()
 	{
@@ -110,31 +142,5 @@ public class JAMDRobot implements Robot
 		this.reset();
 	}
 
-	private void turnClockwise()
-	{
-		// Needs implementation in Arduino
 
-		myDirection = myDirection.getClockWise();
-	}
-
-	private void turnCounterClockwise()
-	{
-		// Needs implementation in Arduino
-
-		myDirection = myDirection.getCounterClockwise();
-	}
-
-	private void moveForward()
-	{
-		// Needs implementation in Arduino
-
-		myLocation = myLocation.getAdjacent(myDirection);
-	}
-
-	private boolean hasWall(Direction direction)
-	{
-		// Needs implementation in Arduino
-
-
-	}
 }
