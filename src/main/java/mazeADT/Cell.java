@@ -1,5 +1,8 @@
 package mazeADT;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import mazeUtil.Location;
 import mazeUtil.Direction;
 import mazeUtil.LocationList;
