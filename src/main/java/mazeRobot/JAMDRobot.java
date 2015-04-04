@@ -34,7 +34,7 @@ public class JAMDRobot implements Robot
 		while(true)
 		{
 			this.run();
-			
+
 		}
 	}
 
@@ -60,55 +60,7 @@ public class JAMDRobot implements Robot
 
 	}
 
-	public void reset()
-	{
-		myLocation = new Location(0,0);
-		myDirection = Direction.NORTH;
-	}
 
-	/**
-	* NOT NECESSARY FOR FINAL IMPLEMENTATION
-	*@return The maze that this robot has so far constructed
-	* of its environment
-	*/
-	public Maze getMaze()
-	{
-		return myMaze;
-	}
-
-	/**
-	* NOT NECESSARY FOR FINAL IMPLEMENTATION
-	*@return The path that this robot is curently folowing
-	*/
-	public LocationList getPath()
-	{
-		return myPath;
-	}
-
-	/**
-	* NOT NECESSARY FOR FINAL IMPLEMENTATION
-	*/
-	public Location getLocation()
-	{
-		return myLocation;
-	}
-
-	/**
-	* NOT NECESSARY FOR FINAL IMPLEMENTATION
-	*/
-	public Direction getDirection()
-	{
-		return myDirection;
-	}
-
-	/**
-	* NOT NECESSARY FOR FINAL IMPLEMENTATION
-	*/
-	public void clear()
-	{
-		myMaze = new Maze(16,16);
-		this.reset();
-	}
 
 	private void turnClockwise()
 	{
@@ -135,6 +87,59 @@ public class JAMDRobot implements Robot
 	{
 		// Needs implementation in Arduino
 
-
+		return myEnvironment.hasWall(direction);
 	}
+
+	public void reset()
+	{
+		myLocation = new Location(0,0);
+		myDirection = Direction.NORTH;
+	}
+	/**
+	* NOT NECESSARY FOR FINAL IMPLEMENTATION
+	*@return The maze that this robot has so far constructed
+	* of its environment
+	*/
+	public Maze getMaze()
+	{
+		return myMaze;
+	}
+
+	/**
+	* NOT NECESSARY FOR FINAL IMPLEMENTATION
+	*@return The path that this robot is curently folowing
+	*/
+	public LocationList getPath()
+	{
+		return myPath;
+	}
+
+	/**
+	* NOT NECESSARY FOR FINAL IMPLEMENTATION
+	* Note: Check if called
+	*/
+	public Location getLocation()
+	{
+		return myLocation;
+	}
+
+	/**
+	* NOT NECESSARY FOR FINAL IMPLEMENTATION
+	* Note: Check if called
+	*/
+	public Direction getDirection()
+	{
+		return myDirection;
+	}
+
+	/**
+	* NOT NECESSARY FOR FINAL IMPLEMENTATION
+	*/
+	public void clear()
+	{
+		myMaze = new Maze(16,16);
+		this.reset();
+	}
+
+
 }

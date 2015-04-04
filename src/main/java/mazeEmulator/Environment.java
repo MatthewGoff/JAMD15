@@ -30,6 +30,21 @@ public class Environment
 		mainWindow = new MainWindow(800,800,this,simulatedMaze);
 	}
 
+	public void hasMovedForward()
+	{
+
+	}
+
+	public void hasTurnedCounterClockwise()
+	{
+
+	}
+
+	public void hasTurnedClockwise()
+	{
+
+	}
+	
 	public void switchDebugView()
 	{
 		DEBUG_VIEW=!DEBUG_VIEW;
