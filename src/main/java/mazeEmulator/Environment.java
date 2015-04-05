@@ -10,6 +10,8 @@ import mazeUtil.Direction;
 import mazeUtil.Location;
 import mazeUtil.LocationList;
 
+//For commit
+
 public class Environment
 {
 	public static boolean DEBUG_VIEW = false;
@@ -20,7 +22,7 @@ public class Environment
 
 	public static void main(String[] args)
 	{
-		Environment myEnvironment = new Environment();
+		Envioronment myEnvironment = new Environment();
 	}
 
 	private Environment()
@@ -28,6 +30,21 @@ public class Environment
 		myRobot = new JAMDRobot(new Location(7,7), this);
 		simulatedMaze = new Maze(16,16);
 		mainWindow = new MainWindow(800,800,this,simulatedMaze);
+	}
+
+	public void hasMovedForward()
+	{
+
+	}
+
+	public void hasTurnedCounterClockwise()
+	{
+
+	}
+
+	public void hasTurnedClockwise()
+	{
+
 	}
 
 	public void switchDebugView()
