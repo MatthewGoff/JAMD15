@@ -10,6 +10,8 @@ import mazeUtil.Direction;
 import mazeUtil.Location;
 import mazeUtil.LocationList;
 
+//For commit
+
 public class Environment
 {
 	public static boolean DEBUG_VIEW = false;
@@ -44,7 +46,7 @@ public class Environment
 	{
 
 	}
-	
+
 	public void switchDebugView()
 	{
 		DEBUG_VIEW=!DEBUG_VIEW;
