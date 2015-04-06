@@ -1,8 +1,7 @@
 package mazeRobot;
 
-import mazeEmulator.Robot;
+import mazeEmulator.Environment;
 import mazeADT.Maze;
-
 import mazeUtil.Location;
 import mazeUtil.Direction;
 import mazeUtil.LocationList;
@@ -66,7 +65,7 @@ public class JAMDRobot implements Robot
 	{
 		// Needs implementation in Arduino
 
-		myDirection = myDirection.getClockWise();
+		myDirection = myDirection.getClockwise();
 	}
 
 	private void turnCounterClockwise()
@@ -74,7 +73,7 @@ public class JAMDRobot implements Robot
 		// Needs implementation in Arduino
 
 		myDirection = myDirection.getCounterClockwise();
-		myEnvironment.hasMovedCounterClockwise();
+		myEnvironment.hasTurnedCounterClockwise();
 	}
 
 	private void moveForward()
@@ -88,7 +87,7 @@ public class JAMDRobot implements Robot
 	{
 		// Needs implementation in Arduino
 
-		return myEnvironment.hasWall(direction);
+		return myEnvironment.hasWall(myLocation, direction);
 	}
 
 	public void reset()

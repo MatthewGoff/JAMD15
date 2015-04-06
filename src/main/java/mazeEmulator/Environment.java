@@ -10,8 +10,6 @@ import mazeUtil.Direction;
 import mazeUtil.Location;
 import mazeUtil.LocationList;
 
-//For commit
-
 public class Environment
 {
 	public static boolean DEBUG_VIEW = false;
@@ -19,17 +17,24 @@ public class Environment
 	private MainWindow mainWindow;
 	private Robot myRobot;
 	private Maze simulatedMaze;
+	private Direction robotDirection;
+	private Location robotLocation;
+	private LocationList robotPath;
 
 	public static void main(String[] args)
 	{
-		Envioronment myEnvironment = new Environment();
+		Environment myEnvironment = new Environment();
 	}
 
 	private Environment()
 	{
 		myRobot = new JAMDRobot(new Location(7,7), this);
 		simulatedMaze = new Maze(16,16);
+		simulatedMaze.generateDepthFirst();
 		mainWindow = new MainWindow(800,800,this,simulatedMaze);
+		robotDirection = Direction.NORTH;
+		robotLocation = new Location(0,0);
+		robotPath = simulatedMaze.getPath(robotLocation, new Location(7,7));
 	}
 
 	public void hasMovedForward()
@@ -55,7 +60,7 @@ public class Environment
 
 	public void generateMaze()
 	{
-		simulatedMaze.generateRandom(0.7);
+		simulatedMaze.generateDepthFirst();;
 		reset();
 	}
 
@@ -71,8 +76,20 @@ public class Environment
 		mainWindow.updateGUI();
 	}
 
-	public void hasWall(Direction direction)
+	public boolean hasWall(Location location, Direction direction)
 	{
+		return simulatedMaze.hasWall(location.getColumn(), location.getRow(), direction);
+	}
 
+	public LocationList getRobotPath() {
+		return this.robotPath;
+	}
+
+	public Direction getRobotDirection() {
+		return this.robotDirection;
+	}
+
+	public Location getRobotLocation() {
+		return this.robotLocation;
 	}
 }

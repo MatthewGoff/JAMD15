@@ -260,7 +260,6 @@ public class Maze
 	 */
 	public void generateDepthFirst()
 	{
-		int counter = 0;
 		Stack<Cell> unvisited = new Stack<Cell>();
 		Cell currentCell;
 		Random randomizer = new Random();
