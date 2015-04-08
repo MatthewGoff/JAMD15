@@ -28,18 +28,42 @@ public class JAMDRobot implements Robot
 		running = false;
 	}
 
+	//Called setup in Arduino
 	public void init()
 	{
+		chooseTarget();
+		myPath = myMaze.getPath(myLocation,myTarget);
 		while(true)
 		{
 			this.run();
-
+			delay(100);
 		}
 	}
 
+	//Caled loop in Arduino
 	public void run()
 	{
+		if (myLocation == endLocation)
+		{
+			chooseTarget();
+			myPath = myMaze.getPath(myLocation,myTarget);
+		}
+		update();
+	}
 
+	private void chooseTarget()
+	{
+		myTarget = endLocation;
+	}
+
+	private void update()
+	{
+		/*
+		If button 1 == HIGH, then running = false;
+		If button 2 == HIGH, then reset() and running = false;
+		If button 3 == HIGH, then switchMode();
+		If button 4 == HIGH, then clear() and running = false;
+		*/
 	}
 
 	private void move(Direction direction)
@@ -132,13 +156,22 @@ public class JAMDRobot implements Robot
 		return myDirection;
 	}
 
-	/**
-	* NOT NECESSARY FOR FINAL IMPLEMENTATION
-	*/
 	public void clear()
 	{
 		myMaze = new Maze(16,16);
 		this.reset();
+	}
+
+	private void delay(int milliseconds)
+	{
+		try
+		{
+			TimeUnit.MILLISECONDS.sleep(milliseconds);
+		}
+		catch (InterruptedException e)
+		{
+			System.out.println("Sleeping was interrupted");
+		}
 	}
 
 
