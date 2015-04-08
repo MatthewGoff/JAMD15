@@ -354,4 +354,9 @@ public class Maze
 			randomDirection = randomDirection.getClockwise();
 		}
 	}
+
+	public void addWall(Location myLocation, Direction direction)
+	{
+		cells[myLocation.getColumn()][myLocation.getRow()].addWall(direction, true);
+	}
 }

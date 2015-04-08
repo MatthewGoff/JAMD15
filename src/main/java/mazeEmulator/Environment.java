@@ -42,34 +42,22 @@ public class Environment
 
 	public void hasMovedForward()
 	{
-		this.robotPath.addToStart(this.robotLocation);
-		this.robotLocation = this.robotLocation.getAdjacent(this.robotDirection);
+		if (!hasWall(robotLocation,robotDirection))
+		{
+			robotPath.addToStart(robotLocation);
+			robotLocation = robotLocation.getAdjacent(robotDirection);
+		}
+		
 	}
 
 	public void hasTurnedCounterClockwise()
 	{
-		if (this.robotDirection == Direction.NORTH){
-			this.robotDirection = Direction.WEST;
-		} else if (this.robotDirection == Direction.WEST) {
-			this.robotDirection = Direction.SOUTH;
-		} else if (this.robotDirection == Direction.SOUTH) {
-			this.robotDirection = Direction.EAST;
-		} else if (this.robotDirection == Direction.EAST) {
-			this.robotDirection = Direction.NORTH;
-		}
+		this.robotDirection = this.robotDirection.getCounterClockwise();
 	}
 
 	public void hasTurnedClockwise()
 	{
-		if (this.robotDirection == Direction.NORTH){
-			this.robotDirection = Direction.EAST;
-		} else if (this.robotDirection == Direction.EAST) {
-			this.robotDirection = Direction.SOUTH;
-		} else if (this.robotDirection == Direction.SOUTH) {
-			this.robotDirection = Direction.WEST;
-		} else if (this.robotDirection == Direction.WEST) {
-			this.robotDirection = Direction.NORTH;
-		}
+		this.robotDirection = this.robotDirection.getClockwise();
 	}
 
 	public void switchDebugView()

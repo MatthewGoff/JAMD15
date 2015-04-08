@@ -42,14 +42,48 @@ public class JAMDRobot implements Robot
 		}
 	}
 
-	//Caled loop in Arduino
+	//Called loop in Arduino
 	public void run()
 	{
+		Location nextLocation;
+		Direction directionToGo;
+		
+		//if we're at the desired location, go to the next location
 		if (myLocation == endLocation)
 		{
 			chooseTarget();
 			myPath = myMaze.getPath(myLocation,myTarget);
 		}
+		
+		//in Arduino, use left IR sensor to check if there is a wall and add it
+		if (hasWall(myDirection.getCounterClockwise()))
+		{
+			addWall(myDirection.getCounterClockwise());
+		}
+		
+		//in Arduino, use center IR sensor to check if there is a wall and add it
+		if (hasWall(myDirection))
+		{
+			addWall(myDirection);
+		}
+		
+		//in Arduino, use right IR sensor to check if there is a wall and add it
+		if (hasWall(myDirection.getClockwise()))
+		{
+			addWall(myDirection.getClockwise());
+		}
+		
+		//once we have all the walls we can sense, find the new path
+		myPath = myMaze.getPath(myLocation, endLocation);
+		nextLocation = myPath.getRoot();
+		directionToGo = myLocation.getDirectionOf(nextLocation);
+		
+		while (myDirection != directionToGo)
+		{
+			myDirection = myDirection.getClockwise();
+		}
+		
+		move();
 		update();
 	}
 
@@ -68,10 +102,10 @@ public class JAMDRobot implements Robot
 		*/
 	}
 
-	private void move(Direction direction)
+	private void move()
 	{
-		// ...
-
+		myLocation = myLocation.getAdjacent(myDirection);
+		myEnvironment.hasMovedForward();
 		myPath.deleteFirst();//Just so that the robot stays on the path
 	}
 
@@ -90,8 +124,8 @@ public class JAMDRobot implements Robot
 	private void turnClockwise()
 	{
 		// Needs implementation in Arduino
-
 		myDirection = myDirection.getClockwise();
+		myEnvironment.hasTurnedClockwise();
 	}
 
 	private void turnCounterClockwise()
@@ -114,6 +148,11 @@ public class JAMDRobot implements Robot
 		// Needs implementation in Arduino
 
 		return myEnvironment.hasWall(myLocation, direction);
+	}
+	
+	private void addWall(Direction direction)
+	{
+		myMaze.addWall(myLocation, direction);
 	}
 
 	public void reset()
