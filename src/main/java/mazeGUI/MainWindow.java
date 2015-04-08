@@ -61,6 +61,7 @@ public class MainWindow extends JFrame implements ActionListener
 		else if (e.getSource()==generateMazeButton)
 		{
 			theEnvironment.generateMaze();
+			theEnvironment.getTruePath();
 		}
 		else if (e.getSource()==correctMazeButton)
 		{

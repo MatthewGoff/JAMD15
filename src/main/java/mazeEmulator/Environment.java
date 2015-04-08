@@ -19,6 +19,7 @@ public class Environment
 	private Maze simulatedMaze;
 	private Direction robotDirection;
 	private Location robotLocation;
+	private LocationList truePath;
 	private LocationList robotPath;
 
 	public static void main(String[] args)
@@ -34,22 +35,39 @@ public class Environment
 		mainWindow = new MainWindow(800,800,this,simulatedMaze);
 		robotDirection = Direction.NORTH;
 		robotLocation = new Location(0,0);
-		robotPath = simulatedMaze.getPath(robotLocation, new Location(7,7));
+		truePath = simulatedMaze.getPath(robotLocation, new Location(7,7));
+		robotPath = new LocationList();
 	}
 
 	public void hasMovedForward()
 	{
-
+		this.robotLocation = this.robotLocation.getAdjacent(this.robotDirection);
 	}
 
 	public void hasTurnedCounterClockwise()
 	{
-
+		if (this.robotDirection == Direction.NORTH){
+			this.robotDirection = Direction.WEST;
+		} else if (this.robotDirection == Direction.WEST) {
+			this.robotDirection = Direction.SOUTH;
+		} else if (this.robotDirection == Direction.SOUTH) {
+			this.robotDirection = Direction.EAST;
+		} else if (this.robotDirection == Direction.EAST) {
+			this.robotDirection = Direction.NORTH;
+		}
 	}
 
 	public void hasTurnedClockwise()
 	{
-
+		if (this.robotDirection == Direction.NORTH){
+			this.robotDirection = Direction.EAST;
+		} else if (this.robotDirection == Direction.EAST) {
+			this.robotDirection = Direction.SOUTH;
+		} else if (this.robotDirection == Direction.SOUTH) {
+			this.robotDirection = Direction.WEST;
+		} else if (this.robotDirection == Direction.WEST) {
+			this.robotDirection = Direction.NORTH;
+		}
 	}
 
 	public void switchDebugView()
@@ -60,7 +78,7 @@ public class Environment
 
 	public void generateMaze()
 	{
-		simulatedMaze.generateDepthFirst();;
+		simulatedMaze.generateDepthFirst();
 		reset();
 	}
 
@@ -81,6 +99,10 @@ public class Environment
 		return simulatedMaze.hasWall(location.getColumn(), location.getRow(), direction);
 	}
 
+	public LocationList getTruePath() {
+		return this.simulatedMaze.getPath(robotLocation, new Location(7,7));
+	}
+	
 	public LocationList getRobotPath() {
 		return this.robotPath;
 	}

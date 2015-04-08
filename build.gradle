@@ -1,7 +1,7 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
-mainClassName = 'mazeEmulator.Simulator'
+mainClassName = 'mazeEmulator.Environment'
 
 run {
     standardInput = System.in
