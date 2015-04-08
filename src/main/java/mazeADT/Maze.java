@@ -194,7 +194,7 @@ public class Maze
 	* Returns the cell in this maze at the argument location
 	* Note: Used in getPath
 	*
-	*@param cellLocation the locatio of the cell you want
+	*@param cellLocation the location of the cell you want
 	*@param Cell the cell at the argument location
 	*/
 	private Cell getCell(Location cellLocation)

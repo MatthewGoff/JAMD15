@@ -15,7 +15,7 @@ public class MainWindow extends JFrame implements ActionListener
 
 	private JButton debugViewButton;
 	private JButton generateMazeButton;
-	private JButton correctMazeButton;
+	private JButton runRobotButton;
 
 	private MazePanel myPanel;
 
@@ -40,6 +40,11 @@ public class MainWindow extends JFrame implements ActionListener
 		generateMazeButton.setBounds(120,10,150,30);
 		generateMazeButton.addActionListener(this);
 
+		runRobotButton = new JButton("Run Robot");
+		this.getContentPane().add(runRobotButton);
+		runRobotButton.setBounds(250,10,150,30);
+		runRobotButton.addActionListener(this);
+
 		myPanel = new MazePanel(environmentParam, mazeParam);
 		this.getContentPane().add(myPanel);
 		myPanel.setBounds(10,40,myPanel.getWidth(),myPanel.getHeight());
@@ -55,6 +60,10 @@ public class MainWindow extends JFrame implements ActionListener
 		else if (e.getSource()==generateMazeButton)
 		{
 			theEnvironment.generateMaze();
+		}
+		else if (e.getSource()==runRobotButton)
+		{
+			theEnvironment.runRobot();
 		}
 	}
 	

@@ -75,7 +75,9 @@ public class JAMDRobot implements Robot
 		
 		//once we have all the walls we can sense, find the new path
 		myPath = myMaze.getPath(myLocation, endLocation);
+		myPath.deleteFirst();
 		nextLocation = myPath.getRoot();
+		System.out.println(nextLocation);
 		directionToGo = myLocation.getDirectionOf(nextLocation);
 		
 		while (myDirection != directionToGo)
@@ -84,6 +86,7 @@ public class JAMDRobot implements Robot
 		}
 		
 		move();
+		System.out.println("Moved!");
 		update();
 	}
 
@@ -94,12 +97,14 @@ public class JAMDRobot implements Robot
 
 	private void update()
 	{
-		/*
-		If button 1 == HIGH, then running = false;
-		If button 2 == HIGH, then reset() and running = false;
-		If button 3 == HIGH, then switchMode();
-		If button 4 == HIGH, then clear() and running = false;
+		
+		/**
+		* If button 1 == HIGH, then running = false;
+		* If button 2 == HIGH, then reset() and running = false;
+		* If button 3 == HIGH, then switchMode();
+		* If button 4 == HIGH, then clear() and running = false;
 		*/
+		
 	}
 
 	private void move()

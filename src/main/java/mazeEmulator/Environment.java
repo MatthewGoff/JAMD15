@@ -15,7 +15,7 @@ public class Environment
 	public static boolean DEBUG_VIEW = false;
 
 	private MainWindow mainWindow;
-	private Robot myRobot;
+	private JAMDRobot myRobot;
 	private Maze simulatedMaze;
 	private Direction robotDirection;
 	private Location robotLocation;
@@ -47,7 +47,7 @@ public class Environment
 			robotPath.addToStart(robotLocation);
 			robotLocation = robotLocation.getAdjacent(robotDirection);
 		}
-		
+		mainWindow.updateGUI();
 	}
 
 	public void hasTurnedCounterClockwise()
@@ -97,5 +97,9 @@ public class Environment
 
 	public Location getRobotLocation() {
 		return this.robotLocation;
+	}
+	
+	public void runRobot() {
+		myRobot.init();
 	}
 }
