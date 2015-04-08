@@ -35,12 +35,14 @@ public class Environment
 		mainWindow = new MainWindow(800,800,this,simulatedMaze);
 		robotDirection = Direction.NORTH;
 		robotLocation = new Location(0,0);
-		truePath = simulatedMaze.getPath(robotLocation, new Location(7,7));
 		robotPath = new LocationList();
+		robotPath.addToEnd(robotLocation);
+		truePath = simulatedMaze.getPath(robotLocation, new Location(7,7));
 	}
 
 	public void hasMovedForward()
 	{
+		this.robotPath.addToStart(this.robotLocation);
 		this.robotLocation = this.robotLocation.getAdjacent(this.robotDirection);
 	}
 
@@ -81,13 +83,7 @@ public class Environment
 		simulatedMaze.generateDepthFirst();
 		reset();
 	}
-
-	public void correctMaze()
-	{
-		simulatedMaze.correct();
-		reset();
-	}
-
+	
 	private void reset()
 	{
 		myRobot.clear();

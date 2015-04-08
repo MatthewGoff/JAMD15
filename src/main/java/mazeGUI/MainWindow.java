@@ -40,12 +40,6 @@ public class MainWindow extends JFrame implements ActionListener
 		generateMazeButton.setBounds(120,10,150,30);
 		generateMazeButton.addActionListener(this);
 
-		correctMazeButton = new JButton("Correct maze");
-		this.getContentPane().add(correctMazeButton);
-		correctMazeButton.setBounds(280,10,150,30);
-		correctMazeButton.addActionListener(this);
-
-
 		myPanel = new MazePanel(environmentParam, mazeParam);
 		this.getContentPane().add(myPanel);
 		myPanel.setBounds(10,40,myPanel.getWidth(),myPanel.getHeight());
@@ -61,11 +55,6 @@ public class MainWindow extends JFrame implements ActionListener
 		else if (e.getSource()==generateMazeButton)
 		{
 			theEnvironment.generateMaze();
-			theEnvironment.getTruePath();
-		}
-		else if (e.getSource()==correctMazeButton)
-		{
-			theEnvironment.correctMaze();
 		}
 	}
 	

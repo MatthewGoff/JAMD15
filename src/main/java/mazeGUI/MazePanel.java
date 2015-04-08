@@ -50,6 +50,7 @@ public class MazePanel extends JPanel
 	{
 		paintMaze(g);
 		paintRobotsPath(g);
+		paintTruePath(g);
 		paintRobot(g);
 	}
 
@@ -78,6 +79,30 @@ public class MazePanel extends JPanel
 	private void paintRobotsPath(Graphics g)
 	{
 		LocationList drawPath = theEnvironment.getRobotPath();
+
+		if (drawPath!=null)
+		{
+			drawPath.init_iter();
+			while (!drawPath.atEnd())
+			{
+				Location location1 = drawPath.getCurrent();
+				drawPath.next();
+				Location location2 = drawPath.getCurrent();
+				paintPathLine(location1, location2, g);
+			}
+			Location lastLocation = drawPath.getCurrent();
+			int xcoord = horizontalMargin + (lastLocation.getColumn()*CELL_WIDTH);
+			int ycoord = height - verticalMargin - (lastLocation.getRow()*CELL_HEIGHT);
+			xcoord = xcoord + 15 - 10;
+			ycoord = ycoord - 15 - 10;
+
+			g.fillOval(xcoord,ycoord,20,20);
+		}
+	}
+	
+	private void paintTruePath(Graphics g)
+	{
+		LocationList drawPath = theEnvironment.getTruePath();
 
 		if (drawPath!=null)
 		{

@@ -88,19 +88,19 @@ public class Location
 
 	public Direction getDirectionOf(Location other)
 	{
-		if (other.column = this.column - 1 && other.row = this.row)
+		if ( (other.column == this.column - 1) && (other.row == this.row) )
 		{
 			return Direction.WEST;
 		}
-		else if (other.column = this.column + 1 && other.row = this.row)
+		else if ( (other.column == this.column + 1) && (other.row == this.row) )
 		{
 			return Direction.EAST;
 		}
-		else if (other.column = this.column && other.row = this.row - 1)
+		else if ( (other.column == this.column) && (other.row == this.row - 1) )
 		{
 			return Direction.SOUTH;
 		}
-		else if (other.column = this.column && other.row = this.row + 1)
+		else if ( (other.column == this.column) && (other.row == this.row + 1) )
 		{
 			return Direction.NORTH;
 		}

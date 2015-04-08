@@ -1,5 +1,7 @@
 package mazeRobot;
 
+import java.util.concurrent.TimeUnit;
+
 import mazeEmulator.Environment;
 import mazeADT.Maze;
 import mazeUtil.Location;
