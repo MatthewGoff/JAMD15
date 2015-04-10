@@ -275,6 +275,8 @@ public class Maze
 		currentCell = unvisited.pop();
 		this.randomDepthFirst(currentCell, unvisited, randomizer);
 		this.clearCenter();
+		cells[0][0].clearWalls();
+		cells[0][0].addWall(Direction.EAST, true);
 		this.correct();
 	}
 	
@@ -291,7 +293,6 @@ public class Maze
 				newCell.removeWall(neighborDirection, true);
 			}
 			unvisited.remove(newCell);
-			System.out.println("Removed " + neighborDirection + " wall at " + currentCell.getLocation());
 			//System.out.println("Current Cell: " + currentCell);
 			this.randomDepthFirst(newCell,unvisited,randomizer);
 			neighbors.retainAll(unvisited);

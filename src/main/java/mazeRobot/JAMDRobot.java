@@ -35,7 +35,8 @@ public class JAMDRobot implements Robot
 	{
 		chooseTarget();
 		myPath = myMaze.getPath(myLocation,myTarget);
-		while(true)
+		running = true;
+		while(running)
 		{
 			this.run();
 			delay(100);
@@ -43,16 +44,16 @@ public class JAMDRobot implements Robot
 	}
 
 	//Called loop in Arduino
-	public void run()
+	public boolean run()
 	{
 		Location nextLocation;
 		Direction directionToGo;
 		
-		//if we're at the desired location, go to the next location
 		if (myLocation == endLocation)
 		{
-			chooseTarget();
-			myPath = myMaze.getPath(myLocation,myTarget);
+			return false;
+			//chooseTarget();
+			//myPath = myMaze.getPath(myLocation,myTarget);
 		}
 		
 		//in Arduino, use left IR sensor to check if there is a wall and add it
@@ -75,19 +76,24 @@ public class JAMDRobot implements Robot
 		
 		//once we have all the walls we can sense, find the new path
 		myPath = myMaze.getPath(myLocation, endLocation);
-		myPath.deleteFirst();
+		System.out.println(myPath);
+		myPath.deleteFirst(); //gets rid of the location its already at
 		nextLocation = myPath.getRoot();
-		System.out.println(nextLocation);
 		directionToGo = myLocation.getDirectionOf(nextLocation);
 		
 		while (myDirection != directionToGo)
 		{
+			System.out.println("In order to go " + directionToGo + " I'm turning clockwise!");
 			myDirection = myDirection.getClockwise();
+			myEnvironment.hasTurnedClockwise();
 		}
+		move();	
+			
 		
-		move();
-		System.out.println("Moved!");
+		//if we're at the desired location, go to the next location
+		
 		update();
+		return running;
 	}
 
 	private void chooseTarget()
@@ -110,6 +116,7 @@ public class JAMDRobot implements Robot
 	private void move()
 	{
 		myLocation = myLocation.getAdjacent(myDirection);
+		System.out.println("I think I moved to " + myLocation);
 		myEnvironment.hasMovedForward();
 		myPath.deleteFirst();//Just so that the robot stays on the path
 	}
@@ -164,6 +171,7 @@ public class JAMDRobot implements Robot
 	{
 		myLocation = new Location(0,0);
 		myDirection = Direction.NORTH;
+		myMaze = new Maze(16,16);
 	}
 	/**
 	* NOT NECESSARY FOR FINAL IMPLEMENTATION
@@ -202,9 +210,9 @@ public class JAMDRobot implements Robot
 		return myDirection;
 	}
 
-	public void clear()
+	public void setMaze(Maze newMaze)
 	{
-		myMaze = new Maze(16,16);
+		myMaze = newMaze;
 		this.reset();
 	}
 
@@ -218,6 +226,11 @@ public class JAMDRobot implements Robot
 		{
 			System.out.println("Sleeping was interrupted");
 		}
+	}
+
+	public void clear() {
+		this.reset();
+		
 	}
 
 

@@ -42,7 +42,7 @@ public class MainWindow extends JFrame implements ActionListener
 
 		runRobotButton = new JButton("Run Robot");
 		this.getContentPane().add(runRobotButton);
-		runRobotButton.setBounds(250,10,150,30);
+		runRobotButton.setBounds(270,10,150,30);
 		runRobotButton.addActionListener(this);
 
 		myPanel = new MazePanel(environmentParam, mazeParam);
@@ -69,6 +69,8 @@ public class MainWindow extends JFrame implements ActionListener
 	
 	public void updateGUI()
 	{
+		System.out.println("UPDATING");
 		getContentPane().repaint();
+		myPanel.updateForMove();
 	}
 }

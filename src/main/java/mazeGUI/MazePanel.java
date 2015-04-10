@@ -45,13 +45,29 @@ public class MazePanel extends JPanel
 		width = horizontalMargin*2 + CELL_WIDTH*theMaze.getWidth();
 		height = verticalMargin*2 + CELL_HEIGHT*theMaze.getHeight();
 	}
-
-	protected void paintComponent(Graphics g)
+	
+	@Override
+	public void paint(Graphics g)
 	{
 		paintMaze(g);
 		paintRobotsPath(g);
 		paintTruePath(g);
 		paintRobot(g);
+	}
+
+	protected void paintComponent(Graphics g)
+	{
+		System.out.println("TEST");
+		paintMaze(g);
+		paintRobotsPath(g);
+		paintTruePath(g);
+		paintRobot(g);
+	}
+	
+	public void updateForMove()
+	{
+		paintRobotsPath(getGraphics());
+		paintRobot(getGraphics());
 	}
 
 	private void paintMaze(Graphics g)
@@ -88,7 +104,7 @@ public class MazePanel extends JPanel
 				Location location1 = drawPath.getCurrent();
 				drawPath.next();
 				Location location2 = drawPath.getCurrent();
-				paintPathLine(location1, location2, g);
+				paintPathLine(location1, location2, g, Color.ORANGE);
 			}
 			Location lastLocation = drawPath.getCurrent();
 			int xcoord = horizontalMargin + (lastLocation.getColumn()*CELL_WIDTH);
@@ -102,29 +118,32 @@ public class MazePanel extends JPanel
 	
 	private void paintTruePath(Graphics g)
 	{
-		LocationList drawPath = theEnvironment.getTruePath();
-
-		if (drawPath!=null)
+		if (Environment.DEBUG_VIEW)
 		{
-			drawPath.init_iter();
-			while (!drawPath.atEnd())
-			{
-				Location location1 = drawPath.getCurrent();
-				drawPath.next();
-				Location location2 = drawPath.getCurrent();
-				paintPathLine(location1, location2, g);
-			}
-			Location lastLocation = drawPath.getCurrent();
-			int xcoord = horizontalMargin + (lastLocation.getColumn()*CELL_WIDTH);
-			int ycoord = height - verticalMargin - (lastLocation.getRow()*CELL_HEIGHT);
-			xcoord = xcoord + 15 - 10;
-			ycoord = ycoord - 15 - 10;
+			LocationList drawPath = theEnvironment.getTruePath();
 
-			g.fillOval(xcoord,ycoord,20,20);
+			if (drawPath!=null)
+			{
+				drawPath.init_iter();
+				while (!drawPath.atEnd())
+				{
+					Location location1 = drawPath.getCurrent();
+					drawPath.next();
+					Location location2 = drawPath.getCurrent();
+					paintPathLine(location1, location2, g, Color.CYAN);
+				}
+				Location lastLocation = drawPath.getCurrent();
+				int xcoord = horizontalMargin + (lastLocation.getColumn()*CELL_WIDTH);
+				int ycoord = height - verticalMargin - (lastLocation.getRow()*CELL_HEIGHT);
+				xcoord = xcoord + 15 - 10;
+				ycoord = ycoord - 15 - 10;
+
+				g.fillOval(xcoord,ycoord,20,20);
+			}
 		}
 	}
 
-	private void paintPathLine(Location location1, Location location2, Graphics g)
+	private void paintPathLine(Location location1, Location location2, Graphics g, Color lineColor)
 	{
 		int xcoord1 = horizontalMargin + (location1.getColumn()*CELL_WIDTH);
 		int ycoord1 = height - verticalMargin - (location1.getRow()*CELL_HEIGHT);
@@ -136,7 +155,7 @@ public class MazePanel extends JPanel
 		xcoord2 = xcoord2 + 15;
 		ycoord2 = ycoord2 - 15;
 
-		g.setColor(Color.CYAN);
+		g.setColor(lineColor);
 		g.drawLine(xcoord1,ycoord1,xcoord2,ycoord2);
 		g.drawLine(xcoord1+1,ycoord1+1,xcoord2+1,ycoord2+1);
 		g.drawLine(xcoord1-1,ycoord1-1,xcoord2-1,ycoord2-1);

@@ -2,10 +2,8 @@ package mazeEmulator;
 
 import mazeRobot.Robot;
 import mazeRobot.JAMDRobot;
-
 import mazeGUI.MainWindow;
 import mazeADT.Maze;
-
 import mazeUtil.Direction;
 import mazeUtil.Location;
 import mazeUtil.LocationList;
@@ -46,18 +44,21 @@ public class Environment
 		{
 			robotPath.addToStart(robotLocation);
 			robotLocation = robotLocation.getAdjacent(robotDirection);
+			System.out.println("It moved to " + robotLocation);
 		}
 		mainWindow.updateGUI();
 	}
 
 	public void hasTurnedCounterClockwise()
 	{
-		this.robotDirection = this.robotDirection.getCounterClockwise();
+		robotDirection = robotDirection.getCounterClockwise();
+		System.out.println("It turned left");
 	}
 
 	public void hasTurnedClockwise()
 	{
-		this.robotDirection = this.robotDirection.getClockwise();
+		robotDirection = robotDirection.getClockwise();
+		System.out.println("It turned right");
 	}
 
 	public void switchDebugView()
@@ -69,13 +70,19 @@ public class Environment
 	public void generateMaze()
 	{
 		simulatedMaze.generateDepthFirst();
-		reset();
+		this.reset();
 	}
 	
 	private void reset()
 	{
 		myRobot.clear();
+		robotDirection = Direction.NORTH;
+		robotLocation = new Location(0,0);
+		robotPath = new LocationList();
+		robotPath.addToEnd(robotLocation);
+		truePath = simulatedMaze.getPath(robotLocation, new Location(7,7));
 		mainWindow.updateGUI();
+		
 	}
 
 	public boolean hasWall(Location location, Direction direction)
