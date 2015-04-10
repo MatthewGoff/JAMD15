@@ -17,6 +17,7 @@ public class JAMDRobot implements Robot
 	private Location 		myTarget;
 	private Location 		endLocation;
 	private Maze 			myMaze;
+	private int 			stepsTaken;
 
 	private boolean running;
 
@@ -27,6 +28,7 @@ public class JAMDRobot implements Robot
 		myDirection = Direction.NORTH;
 		endLocation = endLocationParam;
 		myEnvironment = myEnvironmentParam;
+		stepsTaken = 0;
 		running = false;
 	}
 
@@ -49,11 +51,21 @@ public class JAMDRobot implements Robot
 		Location nextLocation;
 		Direction directionToGo;
 		
-		if (myLocation == endLocation)
+		//System.out.println("I am at " + myLocation + " going to " + endLocation);
+		//System.out.println("I am at my destination: "+ (myLocation.equals(endLocation)));
+		if (myLocation.equals(endLocation))
 		{
-			return false;
-			//chooseTarget();
-			//myPath = myMaze.getPath(myLocation,myTarget);
+			System.out.println("Steps taken: " + stepsTaken);
+			stepsTaken = 0;
+			if (endLocation.equals(new Location(7,7)))
+			{
+				endLocation = new Location (0,0);
+				System.out.println("My new goal is " + endLocation);
+			} else 
+			{
+				endLocation = new Location(7,7);
+				System.out.println("My new goal is " + endLocation);
+			}
 		}
 		
 		//in Arduino, use left IR sensor to check if there is a wall and add it
@@ -76,19 +88,19 @@ public class JAMDRobot implements Robot
 		
 		//once we have all the walls we can sense, find the new path
 		myPath = myMaze.getPath(myLocation, endLocation);
-		System.out.println(myPath);
+		//System.out.println(myPath);
 		myPath.deleteFirst(); //gets rid of the location its already at
 		nextLocation = myPath.getRoot();
 		directionToGo = myLocation.getDirectionOf(nextLocation);
 		
 		while (myDirection != directionToGo)
 		{
-			System.out.println("In order to go " + directionToGo + " I'm turning clockwise!");
+			//System.out.println("In order to go " + directionToGo + " I'm turning clockwise!");
 			myDirection = myDirection.getClockwise();
 			myEnvironment.hasTurnedClockwise();
 		}
 		move();	
-			
+		stepsTaken++;
 		
 		//if we're at the desired location, go to the next location
 		
@@ -104,11 +116,10 @@ public class JAMDRobot implements Robot
 	private void update()
 	{
 		
-		/**
-		* If button 1 == HIGH, then running = false;
-		* If button 2 == HIGH, then reset() and running = false;
+		/* If button 1 == HIGH, then toggle running;
+		* If button 2 == HIGH, then reset() and toggle running;
 		* If button 3 == HIGH, then switchMode();
-		* If button 4 == HIGH, then clear() and running = false;
+		* If button 4 == HIGH, then clear() and toggle running;
 		*/
 		
 	}
@@ -116,7 +127,6 @@ public class JAMDRobot implements Robot
 	private void move()
 	{
 		myLocation = myLocation.getAdjacent(myDirection);
-		System.out.println("I think I moved to " + myLocation);
 		myEnvironment.hasMovedForward();
 		myPath.deleteFirst();//Just so that the robot stays on the path
 	}
@@ -171,7 +181,6 @@ public class JAMDRobot implements Robot
 	{
 		myLocation = new Location(0,0);
 		myDirection = Direction.NORTH;
-		myMaze = new Maze(16,16);
 	}
 	/**
 	* NOT NECESSARY FOR FINAL IMPLEMENTATION
@@ -210,12 +219,6 @@ public class JAMDRobot implements Robot
 		return myDirection;
 	}
 
-	public void setMaze(Maze newMaze)
-	{
-		myMaze = newMaze;
-		this.reset();
-	}
-
 	private void delay(int milliseconds)
 	{
 		try
@@ -230,7 +233,9 @@ public class JAMDRobot implements Robot
 
 	public void clear() {
 		this.reset();
-		
+		myLocation = new Location(0,0);
+		myDirection = Direction.NORTH;
+		myMaze = new Maze(16,16);		
 	}
 
 

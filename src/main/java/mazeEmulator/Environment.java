@@ -44,7 +44,7 @@ public class Environment
 		{
 			robotPath.addToStart(robotLocation);
 			robotLocation = robotLocation.getAdjacent(robotDirection);
-			System.out.println("It moved to " + robotLocation);
+			//System.out.println("It moved to " + robotLocation);
 		}
 		mainWindow.updateGUI();
 	}
@@ -52,13 +52,13 @@ public class Environment
 	public void hasTurnedCounterClockwise()
 	{
 		robotDirection = robotDirection.getCounterClockwise();
-		System.out.println("It turned left");
+		//System.out.println("It turned left");
 	}
 
 	public void hasTurnedClockwise()
 	{
 		robotDirection = robotDirection.getClockwise();
-		System.out.println("It turned right");
+		//System.out.println("It turned right");
 	}
 
 	public void switchDebugView()

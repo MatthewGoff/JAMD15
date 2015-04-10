@@ -69,7 +69,6 @@ public class MainWindow extends JFrame implements ActionListener
 	
 	public void updateGUI()
 	{
-		System.out.println("UPDATING");
 		getContentPane().repaint();
 		myPanel.updateForMove();
 	}
