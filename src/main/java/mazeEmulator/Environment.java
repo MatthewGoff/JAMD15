@@ -29,8 +29,8 @@ public class Environment
 	{
 		myRobot = new JAMDRobot(new Location(7,7), this);
 		simulatedMaze = new Maze(16,16);
-		simulatedMaze.generateDepthFirst();
-		mainWindow = new MainWindow(800,800,this,simulatedMaze);
+		//simulatedMaze.generateDepthFirst();
+		mainWindow = new MainWindow(800,1500,this,simulatedMaze,myRobot);
 		robotDirection = Direction.NORTH;
 		robotLocation = new Location(0,0);
 		robotPath = new LocationList();
@@ -52,12 +52,14 @@ public class Environment
 	public void hasTurnedCounterClockwise()
 	{
 		robotDirection = robotDirection.getCounterClockwise();
+		mainWindow.updateGUI();
 		//System.out.println("It turned left");
 	}
 
 	public void hasTurnedClockwise()
 	{
 		robotDirection = robotDirection.getClockwise();
+		mainWindow.updateGUI();
 		//System.out.println("It turned right");
 	}
 

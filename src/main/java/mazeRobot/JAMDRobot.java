@@ -41,7 +41,7 @@ public class JAMDRobot implements Robot
 		while(running)
 		{
 			this.run();
-			delay(100);
+			delay(300);
 		}
 	}
 
@@ -90,7 +90,7 @@ public class JAMDRobot implements Robot
 		myPath = myMaze.getPath(myLocation, endLocation);
 		//System.out.println(myPath);
 		myPath.deleteFirst(); //gets rid of the location its already at
-		nextLocation = myPath.getRoot();
+		nextLocation = myPath.getFirst();
 		directionToGo = myLocation.getDirectionOf(nextLocation);
 		
 		while (myDirection != directionToGo)
@@ -118,7 +118,6 @@ public class JAMDRobot implements Robot
 		
 		/* If button 1 == HIGH, then toggle running;
 		* If button 2 == HIGH, then reset() and toggle running;
-		* If button 3 == HIGH, then switchMode();
 		* If button 4 == HIGH, then clear() and toggle running;
 		*/
 		
@@ -135,13 +134,6 @@ public class JAMDRobot implements Robot
 	{
 		running = !running;
 	}
-
-	public void mode_switch()
-	{
-
-	}
-
-
 
 	private void turnClockwise()
 	{

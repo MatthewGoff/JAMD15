@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import mazeRobot.Robot;
 import mazeADT.Maze;
 import mazeEmulator.Environment;
 
@@ -17,11 +18,12 @@ public class MainWindow extends JFrame implements ActionListener
 	private JButton generateMazeButton;
 	private JButton runRobotButton;
 
-	private MazePanel myPanel;
+	private RobotPanel robotPanel;
+	private MazePanel realPanel;
 
 	private Environment theEnvironment;
 
-	public MainWindow(int heightParam, int widthParam, Environment environmentParam, Maze mazeParam)
+	public MainWindow(int heightParam, int widthParam, Environment environmentParam, Maze mazeParam, Robot robotParam)
 	{
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setSize(widthParam,heightParam);
@@ -45,9 +47,13 @@ public class MainWindow extends JFrame implements ActionListener
 		runRobotButton.setBounds(270,10,150,30);
 		runRobotButton.addActionListener(this);
 
-		myPanel = new MazePanel(environmentParam, mazeParam);
-		this.getContentPane().add(myPanel);
-		myPanel.setBounds(10,40,myPanel.getWidth(),myPanel.getHeight());
+		realPanel = new MazePanel(environmentParam, mazeParam);
+		this.getContentPane().add(realPanel);
+		realPanel.setBounds(10,40,realPanel.getWidth(),realPanel.getHeight());
+
+		robotPanel = new RobotPanel(robotParam);
+		this.getContentPane().add(robotPanel);
+		robotPanel.setBounds(10+realPanel.getWidth()+10,40,robotPanel.getWidth(),robotPanel.getHeight());
 
 		this.setVisible(true);
 	}
@@ -69,7 +75,7 @@ public class MainWindow extends JFrame implements ActionListener
 	
 	public void updateGUI()
 	{
-		getContentPane().repaint();
-		myPanel.updateForMove();
+		robotPanel.paint(robotPanel.getGraphics());
+		realPanel.paint(realPanel.getGraphics());
 	}
 }

@@ -41,9 +41,19 @@ public class LocationList
 		}
 	}
 	
-	public Location getRoot()
+	/**
+	* Renamed from getRoot.
+	*/
+	public Location getFirst()
 	{
-		return root.myLocation;
+		if (this.isEmpty())
+		{
+			return null;
+		}
+		else
+		{
+			return root.myLocation;
+		}
 	}
 
 	public void deleteFirst()
