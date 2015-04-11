@@ -1,4 +1,4 @@
-#include <MazeUtils.h>
+
 
 //Import Statements
 
@@ -17,14 +17,12 @@ const int stepPinRight = 3;
 const int dirPinLeft = 4;
 const int stepPinLeft = 5;
 
-Location 	myTarget(7,7);
-Maze myMaze(16,16);
-Location myLocation(0,0);
-Location endLocation(7,7);
-LocationList myPath = myMaze.getPath(myLocation,myTarget);
-
-boolean  isRunning;
+boolean isRunning;
 int myDirection;
+boolean myMaze[16][16];
+int myLocation[2];
+int dirToGo;
+
 
 void setup() {
   pinMode(Button1Pin, INPUT);
@@ -43,8 +41,6 @@ void setup() {
   pinMode(stepPinRight, OUTPUT);
 
   isRunning = false;
-
-  chooseTarget();
 }
 
 void loop()
@@ -56,40 +52,34 @@ void loop()
   update();
 }
 
-void addWall(int direction)
+void proceed()
 {
-	myMaze.addWall(myLocation, direction);
+  
+ myMaze[myLocation[0]][myLocation[1]] = isBad();
+
+  do
+  {
+    dirToGo = random(4);
+    while (myDirection != dirToGo)
+    {
+      //System.out.println("In order to go " + directionToGo + " I'm turning clockwise!");
+      turnClockwise();
+    }
+  } while (getAdjacent(dirToGo)&&analogRead(IRCenterPin)>200);
+  moveForward();
 }
 
-void proceed() {
+boolean isBad()
+{
+  return (((analogRead(IRLeftPin)>200)||getAdjacent((myDirection-1)%4))&&((analogRead(IRCenterPin)>200)||getAdjacent(myDirection))&&((analogRead(IRRightPin)>200)||getAdjacent((myDirection+1)%4)));
+}
 
-	int directionToGo;
-        Location nextLocation(0,0);
-	
-	//System.out.println("I am at " + myLocation + " going to " + endLocation);
-	//System.out.println("I am at my destination: "+ (myLocation.equals(endLocation)));
-	if (myLocation.equals(myTarget))
-	{
-		chooseTarget();
-	}
-	
-	updateCell();
-	
-	//once we have all the walls we can sense, find the new path
-	myPath = myMaze.getPath(myLocation, myTarget);
-	//System.out.println(myPath);
-	myPath.deleteFirst(); //gets rid of the location its already at
-	nextLocation = myPath.getFirst();
-	directionToGo = myLocation.getDirectionOf(nextLocation);
-	
-	while (myDirection != directionToGo)
-	{
-		//System.out.println("In order to go " + directionToGo + " I'm turning clockwise!");
-		turnClockwise();
-	}
-	moveForward();
-	
-	//if we're at the desired location, go to the next location
+boolean getAdjacent(int dir)
+{
+  if (dir==0) {return myMaze[myLocation[0]][myLocation[1]+1];}
+  if (dir==1) {return myMaze[myLocation[0]+1][myLocation[1]];}
+  if (dir==2) {return myMaze[myLocation[0]][myLocation[1]-1];}
+  if (dir==3) {return myMaze[myLocation[0]+1][myLocation[1]];}
 }
 
 void turnClockwise()
@@ -106,6 +96,7 @@ void turnClockwise()
     digitalWrite(stepPinRight, HIGH);
     delayMicroseconds(2000);
   }
+  myDirection = (myDirection+1)%4;
   
   
 }
@@ -124,6 +115,7 @@ void turnCounterClockwise()
     digitalWrite(stepPinRight, HIGH);
     delayMicroseconds(2000);
   } 
+  myDirection = (myDirection-1)%4;
 }
 
 void moveForward()
@@ -140,38 +132,11 @@ void moveForward()
     digitalWrite(stepPinRight, HIGH);
     delayMicroseconds(3000);
   }
-  
-  myLocation = myLocation.getAdjacent(myDirection);
-  myPath.deleteFirst();
-}
+  if (myDirection == 0) {myLocation[1]++;}
+  else if (myDirection == 1) {myLocation[0]++;}
+  else if (myDirection == 2) {myLocation[1]--;}
+  else if (myDirection == 3) {myLocation[0]--;}
 
-void updateCell()
-{  
-  if (analogRead(IRLeftPin)>200)
-  {
-      addWall((myDirection-1)%4);
-  }
-	
-  if (analogRead(IRCenterPin)>200)
-  {
-    addWall(analogRead(IRCenterPin));
-  }
-  
-  if (analogRead(IRRightPin>200))
-  {
-    addWall((myDirection+1)%4);
-  }
-}
-
-void chooseTarget()
-{
-	if (myLocation.equals(Location(7,7)))
-	{
-		myTarget = Location (0,0);
-	} else 
-	{
-		myTarget = Location(7,7);
-	}
 }
 
 void update()
@@ -198,7 +163,8 @@ void update()
 
 void reset()
 {
-	myLocation = Location(0,0);
+	myLocation[0]=0;
+        myLocation[1]=0;
 	myDirection = 0;
 }
 
