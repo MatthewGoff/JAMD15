@@ -18,6 +18,7 @@ public class JAMDRobot implements Robot
 	private Location 		endLocation;
 	private Maze 			myMaze;
 	private int 			stepsTaken;
+	private int				iterations;
 
 	private boolean running;
 
@@ -29,6 +30,7 @@ public class JAMDRobot implements Robot
 		endLocation = endLocationParam;
 		myEnvironment = myEnvironmentParam;
 		stepsTaken = 0;
+		iterations = 0;
 		running = false;
 	}
 
@@ -38,9 +40,10 @@ public class JAMDRobot implements Robot
 		chooseTarget();
 		myPath = myMaze.getPath(myLocation,myTarget);
 		running = true;
+		iterations = 0;
 		while(running)
 		{
-			this.run();
+			running = this.run();
 			delay(100);
 		}
 	}
@@ -55,16 +58,23 @@ public class JAMDRobot implements Robot
 		//System.out.println("I am at my destination: "+ (myLocation.equals(endLocation)));
 		if (myLocation.equals(endLocation))
 		{
+			if (iterations > 6)
+			{
+				return false;
+			}
+			
 			System.out.println("Steps taken: " + stepsTaken);
 			stepsTaken = 0;
 			if (endLocation.equals(new Location(7,7)))
 			{
 				endLocation = new Location (0,0);
 				System.out.println("My new goal is " + endLocation);
+				iterations++;
 			} else 
 			{
 				endLocation = new Location(7,7);
 				System.out.println("My new goal is " + endLocation);
+				iterations++;
 			}
 		}
 		
