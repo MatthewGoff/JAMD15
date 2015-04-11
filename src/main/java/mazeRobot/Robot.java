@@ -17,7 +17,6 @@ public interface Robot
 	public Direction getDirection();
 
 	public void start_stop();
-	public void mode_switch();
 	public void reset();
 
 	public void clear();

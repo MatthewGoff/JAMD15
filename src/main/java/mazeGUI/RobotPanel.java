@@ -5,13 +5,14 @@ import java.awt.Graphics;
 import java.awt.Dimension;
 import java.awt.Color;
 
+import mazeRobot.Robot;
 import mazeEmulator.Environment;
 import mazeADT.Maze;
 import mazeUtil.Direction;
 import mazeUtil.Location;
 import mazeUtil.LocationList;
 
-public class MazePanel extends JPanel
+public class RobotPanel extends JPanel
 {
 	private static final Color WALL_COLOR = Color.BLACK;
 	private static final Color NO_WALL_COLOR = Color.GRAY;
@@ -31,47 +32,44 @@ public class MazePanel extends JPanel
 	private int verticalMargin;
 	private int horizontalMargin;
 
-	private Environment theEnvironment;
-	private Maze theMaze;
+	private Robot theRobot;
 
-	protected MazePanel(Environment environmentParam, Maze mazeParam)
+	protected RobotPanel(Robot robotParam)
 	{
-		theEnvironment = environmentParam;
-		theMaze = mazeParam;
+		theRobot = robotParam;
 
 		verticalMargin = 20;
 		horizontalMargin = 20;
 
-		width = horizontalMargin*2 + CELL_WIDTH*theMaze.getWidth();
-		height = verticalMargin*2 + CELL_HEIGHT*theMaze.getHeight();
+		width = horizontalMargin*2 + CELL_WIDTH*theRobot.getMaze().getWidth();
+		height = verticalMargin*2 + CELL_HEIGHT*theRobot.getMaze().getHeight();
 	}
-	
+
 	public void paint(Graphics g)
 	{
 		super.paint(g);
 
 		paintMaze(g);
 		paintRobotsPath(g);
-		paintTruePath(g);
 		paintRobot(g);
 	}
 
 	private void paintMaze(Graphics g)
 	{
 		g.setColor(Color.BLACK);
-		g.drawRect(horizontalMargin-1,verticalMargin-1,CELL_WIDTH*theMaze.getWidth()+2,CELL_HEIGHT*theMaze.getHeight()+2);
+		g.drawRect(horizontalMargin-1,verticalMargin-1,CELL_WIDTH*theRobot.getMaze().getWidth()+2,CELL_HEIGHT*theRobot.getMaze().getHeight()+2);
 
-		for (int column=0;column<theMaze.getWidth();column++)
+		for (int column=0;column<theRobot.getMaze().getWidth();column++)
 		{
-			for (int row=0;row<theMaze.getHeight();row++)
+			for (int row=0;row<theRobot.getMaze().getHeight();row++)
 			{
 				paintCell(column, row, g);
 			}
 		}
 		g.setColor(WALL_COLOR);
-		for (int xPillar=0;xPillar<theMaze.getWidth()+1;xPillar++)
+		for (int xPillar=0;xPillar<theRobot.getMaze().getWidth()+1;xPillar++)
 		{
-			for (int yPillar=0;yPillar<theMaze.getHeight()+1;yPillar++)
+			for (int yPillar=0;yPillar<theRobot.getMaze().getHeight()+1;yPillar++)
 			{
 				g.fillRect(horizontalMargin+(xPillar*CELL_WIDTH)-1,height-verticalMargin-(yPillar*CELL_HEIGHT)-1,3,3);
 			}
@@ -80,7 +78,7 @@ public class MazePanel extends JPanel
 
 	private void paintRobotsPath(Graphics g)
 	{
-		LocationList drawPath = theEnvironment.getRobotPath();
+		LocationList drawPath = theRobot.getPath();
 
 		if (drawPath!=null)
 		{
@@ -90,7 +88,7 @@ public class MazePanel extends JPanel
 				Location location1 = drawPath.getCurrent();
 				drawPath.next();
 				Location location2 = drawPath.getCurrent();
-				paintPathLine(location1, location2, g, Color.ORANGE);
+				paintPathLine(location1, location2, g);
 			}
 			Location lastLocation = drawPath.getCurrent();
 			int xcoord = horizontalMargin + (lastLocation.getColumn()*CELL_WIDTH);
@@ -101,35 +99,8 @@ public class MazePanel extends JPanel
 			g.fillOval(xcoord,ycoord,20,20);
 		}
 	}
-	
-	private void paintTruePath(Graphics g)
-	{
-		if (Environment.DEBUG_VIEW)
-		{
-			LocationList drawPath = theEnvironment.getTruePath();
 
-			if (drawPath!=null)
-			{
-				drawPath.init_iter();
-				while (!drawPath.atEnd())
-				{
-					Location location1 = drawPath.getCurrent();
-					drawPath.next();
-					Location location2 = drawPath.getCurrent();
-					paintPathLine(location1, location2, g, Color.CYAN);
-				}
-				Location lastLocation = drawPath.getCurrent();
-				int xcoord = horizontalMargin + (lastLocation.getColumn()*CELL_WIDTH);
-				int ycoord = height - verticalMargin - (lastLocation.getRow()*CELL_HEIGHT);
-				xcoord = xcoord + 15 - 10;
-				ycoord = ycoord - 15 - 10;
-
-				g.fillOval(xcoord,ycoord,20,20);
-			}
-		}
-	}
-
-	private void paintPathLine(Location location1, Location location2, Graphics g, Color lineColor)
+	private void paintPathLine(Location location1, Location location2, Graphics g)
 	{
 		int xcoord1 = horizontalMargin + (location1.getColumn()*CELL_WIDTH);
 		int ycoord1 = height - verticalMargin - (location1.getRow()*CELL_HEIGHT);
@@ -141,7 +112,7 @@ public class MazePanel extends JPanel
 		xcoord2 = xcoord2 + 15;
 		ycoord2 = ycoord2 - 15;
 
-		g.setColor(lineColor);
+		g.setColor(Color.CYAN);
 		g.drawLine(xcoord1,ycoord1,xcoord2,ycoord2);
 		g.drawLine(xcoord1+1,ycoord1+1,xcoord2+1,ycoord2+1);
 		g.drawLine(xcoord1-1,ycoord1-1,xcoord2-1,ycoord2-1);
@@ -164,7 +135,7 @@ public class MazePanel extends JPanel
 		int xcoord = horizontalMargin + (column*CELL_WIDTH);
 		int ycoord = height - verticalMargin - (row*CELL_HEIGHT);
 
-		if (theMaze.hasWall(column,row,Direction.NORTH))
+		if (theRobot.getMaze().hasWall(column,row,Direction.NORTH))
 		{
 			g.setColor(NORTH_COLOR);
 		}
@@ -175,7 +146,7 @@ public class MazePanel extends JPanel
 		g.drawLine(xcoord+1,ycoord-CELL_HEIGHT+1,xcoord+CELL_WIDTH-1,ycoord-CELL_HEIGHT+1);
 		g.drawLine(xcoord+2,ycoord-CELL_HEIGHT+2,xcoord+CELL_WIDTH-2,ycoord-CELL_HEIGHT+2);
 
-		if (theMaze.hasWall(column,row,Direction.EAST))
+		if (theRobot.getMaze().hasWall(column,row,Direction.EAST))
 		{
 			g.setColor(EAST_COLOR);
 		}
@@ -186,7 +157,7 @@ public class MazePanel extends JPanel
 		g.drawLine(xcoord+CELL_WIDTH-1,ycoord-1,xcoord+CELL_WIDTH-1,ycoord-CELL_HEIGHT+1);
 		g.drawLine(xcoord+CELL_WIDTH-2,ycoord-2,xcoord+CELL_WIDTH-2,ycoord-CELL_HEIGHT+2);
 
-		if (theMaze.hasWall(column,row,Direction.SOUTH))
+		if (theRobot.getMaze().hasWall(column,row,Direction.SOUTH))
 		{
 			g.setColor(SOUTH_COLOR);
 		}
@@ -197,7 +168,7 @@ public class MazePanel extends JPanel
 		g.drawLine(xcoord+1,ycoord-1,xcoord+CELL_WIDTH-1,ycoord-1);
 		g.drawLine(xcoord+2,ycoord-2,xcoord+CELL_WIDTH-2,ycoord-2);
 
-		if (theMaze.hasWall(column,row,Direction.WEST))
+		if (theRobot.getMaze().hasWall(column,row,Direction.WEST))
 		{
 			g.setColor(WEST_COLOR);
 		}
@@ -215,7 +186,7 @@ public class MazePanel extends JPanel
 		int xcoord = horizontalMargin + (column*CELL_WIDTH);
 		int ycoord = height - verticalMargin - (row*CELL_HEIGHT);
 
-		if (theMaze.hasWall(column,row,Direction.NORTH))
+		if (theRobot.getMaze().hasWall(column,row,Direction.NORTH))
 		{
 			g.setColor(WALL_COLOR);
 			g.drawLine(xcoord,ycoord-CELL_HEIGHT,xcoord+CELL_WIDTH,ycoord-CELL_HEIGHT);
@@ -232,7 +203,7 @@ public class MazePanel extends JPanel
 			
 		}
 
-		if (theMaze.hasWall(column,row,Direction.EAST))
+		if (theRobot.getMaze().hasWall(column,row,Direction.EAST))
 		{
 			g.setColor(WALL_COLOR);
 			g.drawLine(xcoord+CELL_WIDTH,ycoord,xcoord+CELL_WIDTH,ycoord-CELL_HEIGHT);
@@ -249,7 +220,7 @@ public class MazePanel extends JPanel
 			
 		}
 
-		if (theMaze.hasWall(column,row,Direction.SOUTH))
+		if (theRobot.getMaze().hasWall(column,row,Direction.SOUTH))
 		{
 			g.setColor(WALL_COLOR);
 			g.drawLine(xcoord,ycoord,xcoord+CELL_WIDTH,ycoord);
@@ -265,7 +236,7 @@ public class MazePanel extends JPanel
 			}
 		}
 
-		if (theMaze.hasWall(column,row,Direction.WEST))
+		if (theRobot.getMaze().hasWall(column,row,Direction.WEST))
 		{
 			g.setColor(WALL_COLOR);
 			g.drawLine(xcoord,ycoord,xcoord,ycoord-CELL_HEIGHT);
@@ -287,8 +258,8 @@ public class MazePanel extends JPanel
 	{
 		g.setColor(Color.BLACK);
 
-		Direction robotDirection = theEnvironment.getRobotDirection();
-		Location robotLocation = theEnvironment.getRobotLocation();
+		Direction robotDirection = theRobot.getDirection();
+		Location robotLocation = theRobot.getLocation();
 		int xcoord = horizontalMargin + (robotLocation.getColumn()*CELL_WIDTH);
 		int ycoord = height - verticalMargin - (robotLocation.getRow()*CELL_HEIGHT);
 

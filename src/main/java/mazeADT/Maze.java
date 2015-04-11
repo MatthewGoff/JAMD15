@@ -136,10 +136,10 @@ public class Maze
 			adjacent = getCell(visited.getCurrent()).getAdjacent();
 			while (!adjacent.isEmpty())
 			{
-				if (!visited.contains(adjacent.getRoot()))
+				if (!visited.contains(adjacent.getFirst()))
 				{
-					connections.addConnection(adjacent.getRoot(),visited.getCurrent());
-					visited.addToEnd(adjacent.getRoot());
+					connections.addConnection(adjacent.getFirst(),visited.getCurrent());
+					visited.addToEnd(adjacent.getFirst());
 				}
 				adjacent.deleteFirst();
 			}

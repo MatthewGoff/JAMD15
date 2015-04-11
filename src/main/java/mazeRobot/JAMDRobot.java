@@ -18,7 +18,6 @@ public class JAMDRobot implements Robot
 	private Location 		endLocation;
 	private Maze 			myMaze;
 	private int 			stepsTaken;
-	private int				iterations;
 
 	private boolean running;
 
@@ -30,7 +29,6 @@ public class JAMDRobot implements Robot
 		endLocation = endLocationParam;
 		myEnvironment = myEnvironmentParam;
 		stepsTaken = 0;
-		iterations = 0;
 		running = false;
 	}
 
@@ -40,44 +38,53 @@ public class JAMDRobot implements Robot
 		chooseTarget();
 		myPath = myMaze.getPath(myLocation,myTarget);
 		running = true;
-		iterations = 0;
 		while(running)
 		{
-			running = this.run();
-			delay(100);
+			this.run();
+			delay(300);
 		}
 	}
 
 	//Called loop in Arduino
-	public boolean run()
+	public void run()
 	{
 		Location nextLocation;
 		Direction directionToGo;
 		
 		//System.out.println("I am at " + myLocation + " going to " + endLocation);
 		//System.out.println("I am at my destination: "+ (myLocation.equals(endLocation)));
-		if (myLocation.equals(endLocation))
-		{
-			if (iterations > 6)
-			{
-				return false;
-			}
-			
+		if (myLocation.equals(myTarget))
+		{	
 			System.out.println("Steps taken: " + stepsTaken);
 			stepsTaken = 0;
-			if (endLocation.equals(new Location(7,7)))
-			{
-				endLocation = new Location (0,0);
-				System.out.println("My new goal is " + endLocation);
-				iterations++;
-			} else 
-			{
-				endLocation = new Location(7,7);
-				System.out.println("My new goal is " + endLocation);
-				iterations++;
-			}
+			chooseTarget();
 		}
 		
+		updateCell();
+		
+		//once we have all the walls we can sense, find the new path
+		myPath = myMaze.getPath(myLocation, myTarget);
+		//System.out.println(myPath);
+		myPath.deleteFirst(); //gets rid of the location its already at
+		nextLocation = myPath.getFirst();
+		directionToGo = myLocation.getDirectionOf(nextLocation);
+		
+		while (myDirection != directionToGo)
+		{
+			//System.out.println("In order to go " + directionToGo + " I'm turning clockwise!");
+			myDirection = myDirection.getClockwise();
+			myEnvironment.hasTurnedClockwise();
+		}
+		moveForward();	
+		stepsTaken++;
+		
+		//if we're at the desired location, go to the next location
+		
+		update();
+	}
+
+	private void updateCell()
+	{
 		//in Arduino, use left IR sensor to check if there is a wall and add it
 		if (hasWall(myDirection.getCounterClockwise()))
 		{
@@ -95,32 +102,19 @@ public class JAMDRobot implements Robot
 		{
 			addWall(myDirection.getClockwise());
 		}
-		
-		//once we have all the walls we can sense, find the new path
-		myPath = myMaze.getPath(myLocation, endLocation);
-		//System.out.println(myPath);
-		myPath.deleteFirst(); //gets rid of the location its already at
-		nextLocation = myPath.getRoot();
-		directionToGo = myLocation.getDirectionOf(nextLocation);
-		
-		while (myDirection != directionToGo)
-		{
-			//System.out.println("In order to go " + directionToGo + " I'm turning clockwise!");
-			myDirection = myDirection.getClockwise();
-			myEnvironment.hasTurnedClockwise();
-		}
-		move();	
-		stepsTaken++;
-		
-		//if we're at the desired location, go to the next location
-		
-		update();
-		return running;
 	}
 
 	private void chooseTarget()
 	{
-		myTarget = endLocation;
+		if (myLocation.equals(new Location(7,7)))
+		{
+			myTarget = new Location (0,0);
+			System.out.println("My new goal is " + myTarget);
+		} else 
+		{
+			myTarget = new Location(7,7);
+			System.out.println("My new goal is " + myTarget);
+		}
 	}
 
 	private void update()
@@ -128,13 +122,12 @@ public class JAMDRobot implements Robot
 		
 		/* If button 1 == HIGH, then toggle running;
 		* If button 2 == HIGH, then reset() and toggle running;
-		* If button 3 == HIGH, then switchMode();
 		* If button 4 == HIGH, then clear() and toggle running;
 		*/
 		
 	}
 
-	private void move()
+	private void moveForward()
 	{
 		myLocation = myLocation.getAdjacent(myDirection);
 		myEnvironment.hasMovedForward();
@@ -145,13 +138,6 @@ public class JAMDRobot implements Robot
 	{
 		running = !running;
 	}
-
-	public void mode_switch()
-	{
-
-	}
-
-
 
 	private void turnClockwise()
 	{
@@ -166,13 +152,6 @@ public class JAMDRobot implements Robot
 
 		myDirection = myDirection.getCounterClockwise();
 		myEnvironment.hasTurnedCounterClockwise();
-	}
-
-	private void moveForward()
-	{
-		// Needs implementation in Arduino
-
-		myLocation = myLocation.getAdjacent(myDirection);
 	}
 
 	private boolean hasWall(Direction direction)
